@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -55,10 +56,26 @@ public class User implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
+
+
     public int getAge() {
-        LocalDate birthLocalDate = dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate currentLocalDate = LocalDate.now(ZoneId.systemDefault());
-        return (int) ChronoUnit.YEARS.between(birthLocalDate, currentLocalDate);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        final int currentYear = calendar.get(Calendar.YEAR);
+        final int currentMonth = calendar.get(Calendar.MONTH);
+        final int currentDate = calendar.get(Calendar.DATE);
+
+        calendar.setTime(dateOfBirth);
+        final int birthYear = calendar.get(Calendar.YEAR);
+        final int birthMonth = calendar.get(Calendar.MONTH);
+        final int birthDate = calendar.get(Calendar.DATE);
+
+        int age = currentYear - birthYear;
+        if (currentMonth < birthMonth || (currentMonth == birthMonth && currentDate < birthDate)) {
+            --age;
+        }
+
+        return age;
     }
 
 

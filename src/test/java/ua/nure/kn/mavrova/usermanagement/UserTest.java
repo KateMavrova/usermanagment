@@ -19,7 +19,7 @@ public class UserTest {
 
     @Before
     public void setUp() throws Exception {
-        myDate = new SimpleDateFormat("dd-MM-yyyy").parse("29-01-1999");
+        myDate = new SimpleDateFormat("dd-MM-yyyy").parse("01-12-1998");
         user = new User(ID,MY_FIRST_NAME, MY_LAST_NAME, myDate);
         calendar = Calendar.getInstance();
     }
@@ -39,44 +39,30 @@ public class UserTest {
 
     @Test
     public void testAgeBirthdayOneDayAfterToday() {
-        int ageExpected = 18;
-
-        calendar.set(1999,calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH + 1));
-        //System.out.println(calendar.getTime());
-        //calendar.add(calendar.get(Calendar.DAY_OF_MONTH), 1);
-        //System.out.println(calendar.getTime());
-
+        int ageExpected = 19;
+        calendar.set(1998,calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH + 1));
         user.setDateOfBirth(calendar.getTime());
-
         int ageActual = user.getAge();
         assertEquals(ageExpected, ageActual);
+    }
+
+
+    @Test
+    public void ageTestSameMonthBefore(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(1998, Calendar.OCTOBER, 15);
+        User user = new User(ID, MY_FIRST_NAME, MY_LAST_NAME, calendar.getTime());
+        assertEquals(20, user.getAge());
     }
 
     @Test
-    public void testAgeOneMonthAheadFromCurrentMonth() {
-        int ageExpected = 18;
-
-        calendar.set(1999,calendar.get(Calendar.MONTH),26);
-        calendar.add(Calendar.MONTH, 1);
-
-        user.setDateOfBirth(calendar.getTime());
-
-        int ageActual = user.getAge();
-        assertEquals(ageExpected, ageActual);
+    public void simpleAgeTestAfter(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(1999, Calendar.APRIL, 11);
+        User user = new User(ID, MY_FIRST_NAME, MY_LAST_NAME, calendar.getTime());
+        assertEquals(19, user.getAge());
     }
 
-    @Test
-    public void testAgeOneYearAheadFromCurrentMonth() {
-        int ageExpected = 17;
-
-        calendar.set(1999,calendar.get(Calendar.MONTH),26);
-        calendar.add(Calendar.YEAR, 1);
-
-        user.setDateOfBirth(calendar.getTime());
-
-        int ageActual = user.getAge();
-        assertEquals(ageExpected, ageActual);
-    }
 
     @Test
     public void testNewbornAge() {
